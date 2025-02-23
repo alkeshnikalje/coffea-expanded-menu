@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@media print {
+  @page {
+    margin: 0;
+    size: 80mm 297mm;
+  }
+  
+  body {
+    margin: 1cm;
+  }
+
+  .print-container {
+    width: 100%;
+    max-width: 80mm;
+    margin: 0 auto;
+  }
+}
