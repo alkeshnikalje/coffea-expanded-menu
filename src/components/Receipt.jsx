@@ -1,5 +1,15 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function Receipt({ orderItems }) {
+  const [isPrinted, setIsPrinted] = useState(false);
+  const navigate = useNavigate();
   const totalAmount = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const handlePrint = () => {
+    window.print();
+    setIsPrinted(true);
+  };
 
   console.log(orderItems);
 
@@ -18,12 +28,21 @@ export default function Receipt({ orderItems }) {
         <span>Total</span>
         <span>Rs. {totalAmount.toFixed(2)}</span>
       </div>
-      <button 
-        onClick={() => window.print()} 
-        className="w-full mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors print:hidden cursor-pointer"
-      >
-        Print Receipt
-      </button>
+      {!isPrinted ? (
+        <button 
+          onClick={handlePrint} 
+          className="w-full mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors print:hidden cursor-pointer"
+        >
+          Print Receipt
+        </button>
+      ) : (
+        <button 
+          onClick={() => navigate('/', { state: { clearOrder: true } })} 
+          className="w-full mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors print:hidden cursor-pointer"
+        >
+          Menu
+        </button>
+      )}
     </div>
   );
 }

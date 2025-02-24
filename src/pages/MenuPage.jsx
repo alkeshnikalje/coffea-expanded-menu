@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import MenuItem from "../components/MenuItem";
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -16,6 +16,15 @@ const menuItems = [
 export default function MenuPage() {
   const [orderItems, setOrderItems] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state?.clearOrder) {
+      setOrderItems([]);
+      // Clean up the state to prevent clearing again on refresh
+      navigate('/', { replace: true });
+    }
+  }, [location.state, navigate]);
+
 
   const addToOrder = (item) => {
     setOrderItems((prev) => {
